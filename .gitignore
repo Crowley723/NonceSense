@@ -1,15 +1,38 @@
-# Remix compiler artifacts
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Build artifacts
 **/artifacts/
-**/artifacts/**
+**/cache/
+*.tsbuildinfo
+dist/
+build/
+
+# Hardhat/Contract artifacts
+contracts/ignition/deployments/
+
+# Debug info
+*.dbg.json
 
 # Remix plugin state folders
 deps/
 states/
 
-# Debug info
-*.dbg.json
-*.tsbuildinfo
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Optional
-.env
-.env.local
+# OS
+.DS_Store
+Thumbs.db
+
+# Don't ignore web contract files (auto-generated)
+!web/src/contracts/
+web/public/
+CLAUDE.md

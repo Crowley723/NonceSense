@@ -1,0 +1,48 @@
+[
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "Increment",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "by",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "inc",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "incBy",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "by"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "x",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  }
+]

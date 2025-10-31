@@ -1,0 +1,36 @@
+{
+  "name": "noncesense",
+  "version": "1.0.0",
+  "description": "Blockchain-based certificate validation dApp replacing centralized CA trust",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.6.4",
+  "scripts": {
+    "dev": "pnpm --filter nonce-sense dev",
+    "dev:contracts": "cd contracts && npx hardhat node",
+    "build": "pnpm --filter nonce-sense build",
+    "build:contracts": "cd contracts && npx hardhat compile",
+    "test": "pnpm test:contracts && pnpm test:web",
+    "test:contracts": "cd contracts && npx hardhat test",
+    "test:web": "cd web && pnpm run lint",
+    "deploy:local": "cd contracts && npx hardhat ignition deploy ignition/modules/Counter.ts --network localhost && cp ignition/deployments/chain-31337/deployed_addresses.json ../web/src/contracts/deployed_addresses.json",
+    "deploy:sepolia": "cd contracts && npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts",
+    "clean": "pnpm --filter nonce-sense clean && cd contracts && npx hardhat clean"
+  },
+  "workspaces": [
+    "contracts",
+    "web"
+  ],
+  "keywords": [
+    "blockchain",
+    "certificate",
+    "validation",
+    "pki",
+    "hardhat",
+    "react",
+    "vite",
+    "ethereum"
+  ],
+  "author": "",
+  "license": "ISC"
+}
