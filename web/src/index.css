@@ -1,3 +1,8 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,15 +16,64 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --radius: 0.625rem;
+
+  /* Light mode - ethereum.org inspired */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.07 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.07 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.07 0 0);
+
+  /* Primary: Purple from ethereum.org (--purple-600: 263,75%,51%) */
+  --primary: oklch(0.51 0.18 263);
+  --primary-foreground: oklch(1 0 0);
+
+  /* Secondary: Gray-400 from ethereum.org */
+  --secondary: oklch(0.55 0 0);
+  --secondary-foreground: oklch(0.07 0 0);
+
+  --muted: oklch(0.93 0 0);
+  --muted-foreground: oklch(0.38 0 0);
+
+  /* Accent: Blue from ethereum.org (--blue-600: 235,81%,58%) */
+  --accent: oklch(0.58 0.16 235);
+  --accent-foreground: oklch(1 0 0);
+
+  /* Destructive: Red from ethereum.org (--red-700: 0,74%,42%) */
+  --destructive: oklch(0.42 0.15 0);
+
+  /* Border: Gray-200 from ethereum.org */
+  --border: oklch(0.81 0 0);
+  --input: oklch(0.81 0 0);
+  --ring: oklch(0.65 0.12 263);
+
+  /* Chart colors using ethereum.org palette */
+  --chart-1: oklch(0.51 0.18 263);
+  --chart-2: oklch(0.58 0.16 235);
+  --chart-3: oklch(0.33 0.15 163);
+  --chart-4: oklch(0.65 0.18 46);
+  --chart-5: oklch(0.36 0.16 142);
+
+  /* Sidebar */
+  --sidebar: oklch(0.97 0 0);
+  --sidebar-foreground: oklch(0.07 0 0);
+  --sidebar-primary: oklch(0.51 0.18 263);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.58 0.16 235);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.81 0 0);
+  --sidebar-ring: oklch(0.65 0.12 263);
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: oklch(0.51 0.18 263);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: white;
 }
 
 body {
@@ -42,12 +96,14 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: oklch(0.51 0.18 263);
+  color: oklch(1 0 0);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  background-color: oklch(0.58 0.16 235);
+  border-color: oklch(0.58 0.16 235);
 }
 button:focus,
 button:focus-visible {
@@ -56,13 +112,111 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: oklch(0.07 0 0);
+    background-color: oklch(1 0 0);
   }
   a:hover {
-    color: #747bff;
+    color: oklch(0.58 0.16 235);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: oklch(0.51 0.18 263);
+    color: oklch(1 0 0);
+  }
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+.dark {
+  /* Dark mode - ethereum.org inspired */
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.15 0.04 264);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.15 0.04 264);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+
+  /* Primary: Light purple for dark mode */
+  --primary: oklch(0.75 0.15 263);
+  --primary-foreground: oklch(0.1 0.04 264);
+
+  /* Secondary: Light gray */
+  --secondary: oklch(0.65 0 0);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+
+  --muted: oklch(0.35 0 0);
+  --muted-foreground: oklch(0.65 0 0);
+
+  /* Accent: Bright blue for dark mode */
+  --accent: oklch(0.72 0.14 235);
+  --accent-foreground: oklch(0.1 0.04 264);
+
+  /* Destructive: Bright red for dark mode */
+  --destructive: oklch(0.65 0.18 0);
+
+  /* Border: Subtle light */
+  --border: oklch(0.25 0.02 264);
+  --input: oklch(0.2 0.02 264);
+  --ring: oklch(0.72 0.14 235);
+
+  /* Chart colors for dark mode */
+  --chart-1: oklch(0.75 0.15 263);
+  --chart-2: oklch(0.72 0.14 235);
+  --chart-3: oklch(0.65 0.14 163);
+  --chart-4: oklch(0.72 0.16 46);
+  --chart-5: oklch(0.62 0.15 142);
+
+  /* Sidebar */
+  --sidebar: oklch(0.15 0.04 264);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.75 0.15 263);
+  --sidebar-primary-foreground: oklch(0.1 0.04 264);
+  --sidebar-accent: oklch(0.72 0.14 235);
+  --sidebar-accent-foreground: oklch(0.1 0.04 264);
+  --sidebar-border: oklch(0.25 0.02 264);
+  --sidebar-ring: oklch(0.72 0.14 235);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
