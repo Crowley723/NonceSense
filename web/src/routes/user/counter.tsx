@@ -95,7 +95,7 @@ function Counter() {
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-background overflow-hidden">
+    <div className="w-full h-full flex items-center justify-center content-center bg-background overflow-hidden">
       <div className="w-full max-w-md px-4 text-center space-y-8">
         <div>
           <h1 className="text-5xl font-bold text-foreground mb-2">

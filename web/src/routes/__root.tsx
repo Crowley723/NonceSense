@@ -20,6 +20,9 @@ export const Route = createRootRoute({
               orientation="vertical"
               className="mr-2 data-[orientation=vertical]:h-4"
             />
+            <div>
+              <p>We can probably put the certificate validity stuff here, green lock if valid, red unlock if invalid.</p>
+            </div>
           </header>
           <main>
             <Outlet />

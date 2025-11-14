@@ -13,6 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserCounterRouteImport } from './routes/user/counter'
 import { Route as DomainRegisterRouteImport } from './routes/domain/register'
 import { Route as DomainCompleteRouteImport } from './routes/domain/complete'
+import { Route as CertsViewRouteImport } from './routes/certs/view'
+import { Route as CertsRevokeRouteImport } from './routes/certs/revoke'
+import { Route as CertsNewRouteImport } from './routes/certs/new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,15 +37,36 @@ const DomainCompleteRoute = DomainCompleteRouteImport.update({
   path: '/domain/complete',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CertsViewRoute = CertsViewRouteImport.update({
+  id: '/certs/view',
+  path: '/certs/view',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertsRevokeRoute = CertsRevokeRouteImport.update({
+  id: '/certs/revoke',
+  path: '/certs/revoke',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertsNewRoute = CertsNewRouteImport.update({
+  id: '/certs/new',
+  path: '/certs/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/certs/new': typeof CertsNewRoute
+  '/certs/revoke': typeof CertsRevokeRoute
+  '/certs/view': typeof CertsViewRoute
   '/domain/complete': typeof DomainCompleteRoute
   '/domain/register': typeof DomainRegisterRoute
   '/user/counter': typeof UserCounterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/certs/new': typeof CertsNewRoute
+  '/certs/revoke': typeof CertsRevokeRoute
+  '/certs/view': typeof CertsViewRoute
   '/domain/complete': typeof DomainCompleteRoute
   '/domain/register': typeof DomainRegisterRoute
   '/user/counter': typeof UserCounterRoute
@@ -50,18 +74,38 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/certs/new': typeof CertsNewRoute
+  '/certs/revoke': typeof CertsRevokeRoute
+  '/certs/view': typeof CertsViewRoute
   '/domain/complete': typeof DomainCompleteRoute
   '/domain/register': typeof DomainRegisterRoute
   '/user/counter': typeof UserCounterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/domain/complete' | '/domain/register' | '/user/counter'
+  fullPaths:
+    | '/'
+    | '/certs/new'
+    | '/certs/revoke'
+    | '/certs/view'
+    | '/domain/complete'
+    | '/domain/register'
+    | '/user/counter'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/domain/complete' | '/domain/register' | '/user/counter'
+  to:
+    | '/'
+    | '/certs/new'
+    | '/certs/revoke'
+    | '/certs/view'
+    | '/domain/complete'
+    | '/domain/register'
+    | '/user/counter'
   id:
     | '__root__'
     | '/'
+    | '/certs/new'
+    | '/certs/revoke'
+    | '/certs/view'
     | '/domain/complete'
     | '/domain/register'
     | '/user/counter'
@@ -69,6 +113,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CertsNewRoute: typeof CertsNewRoute
+  CertsRevokeRoute: typeof CertsRevokeRoute
+  CertsViewRoute: typeof CertsViewRoute
   DomainCompleteRoute: typeof DomainCompleteRoute
   DomainRegisterRoute: typeof DomainRegisterRoute
   UserCounterRoute: typeof UserCounterRoute
@@ -104,11 +151,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DomainCompleteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/certs/view': {
+      id: '/certs/view'
+      path: '/certs/view'
+      fullPath: '/certs/view'
+      preLoaderRoute: typeof CertsViewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certs/revoke': {
+      id: '/certs/revoke'
+      path: '/certs/revoke'
+      fullPath: '/certs/revoke'
+      preLoaderRoute: typeof CertsRevokeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certs/new': {
+      id: '/certs/new'
+      path: '/certs/new'
+      fullPath: '/certs/new'
+      preLoaderRoute: typeof CertsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CertsNewRoute: CertsNewRoute,
+  CertsRevokeRoute: CertsRevokeRoute,
+  CertsViewRoute: CertsViewRoute,
   DomainCompleteRoute: DomainCompleteRoute,
   DomainRegisterRoute: DomainRegisterRoute,
   UserCounterRoute: UserCounterRoute,
