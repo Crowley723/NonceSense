@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { network } from "hardhat";
 import {EventLog} from "ethers";
 
-describe("Counter", function () {
+describe("Certificates", function () {
     let ethers: Awaited<ReturnType<typeof network.connect>>["ethers"];
 
     before(async function () {
