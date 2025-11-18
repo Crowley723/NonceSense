@@ -9,8 +9,9 @@
     "test:solidity": "hardhat test solidity",
     "test:mocha": "hardhat test mocha",
     "node": "hardhat node",
-    "deploy:local": "hardhat ignition deploy ignition/modules/Counter.ts",
-    "deploy:sepolia": "hardhat ignition deploy --network sepolia ignition/modules/Counter.ts",
+    "deploy:local": "hardhat ignition deploy ignition/modules/All.ts",
+    "deploy:local:counter": "hardhat ignition deploy ignition/modules/Counter.ts",
+    "deploy:local:certs": "hardhat ignition deploy ignition/modules/Certificates.ts",
     "clean": "hardhat clean"
   },
   "keywords": ["blockchain", "smart-contracts", "hardhat", "ethereum", "certificate", "pki"],
