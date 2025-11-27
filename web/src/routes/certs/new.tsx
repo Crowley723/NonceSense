@@ -72,7 +72,6 @@ function UploadCertificate(): JSX.Element {
       });
 
       // Clear file input
-      setCertFile(null);
     } catch (err) {
       console.error('Upload error:', err);
       setResult({
@@ -81,6 +80,7 @@ function UploadCertificate(): JSX.Element {
       });
     } finally {
       setLoading(false);
+      setCertFile(null);
     }
   };
 

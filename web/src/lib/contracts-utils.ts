@@ -1,7 +1,7 @@
 
 import { Contract, JsonRpcProvider, keccak256, toUtf8Bytes } from "ethers";
-import CertificatesABI from "../../../contracts/artifacts/contracts/Certificates.sol/Certificates.json";
-import deployedAddresses from "../../../contracts/ignition/deployments/chain-31337/deployed_addresses.json";
+import CertificatesABI from "../contracts/Certificates.json";
+import deployedAddresses from "../contracts/deployed_addresses.json";
 
 
 export const CERTIFICATES_ADDRESS = deployedAddresses["CertificatesModule#Certificates"];
@@ -30,13 +30,13 @@ export async function getSigner() {
 // Get contract instance for reading
 export function getCertificatesContract() {
   const provider = getProvider();
-  return new Contract(CERTIFICATES_ADDRESS, CertificatesABI.abi, provider);
+  return new Contract(CERTIFICATES_ADDRESS, CertificatesABI, provider);
 }
 
 // Get contract instance for writing
 export async function getCertificatesContractWithSigner() {
   const signer = await getSigner();
-  return new Contract(CERTIFICATES_ADDRESS, CertificatesABI.abi, signer);
+  return new Contract(CERTIFICATES_ADDRESS, CertificatesABI, signer);
 }
 
 // Hash certificate file content
