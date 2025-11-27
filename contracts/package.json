@@ -6,33 +6,33 @@
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
-    "test:solidity": "hardhat test solidity",
-    "test:mocha": "hardhat test mocha",
     "node": "hardhat node",
     "deploy:local": "hardhat ignition deploy ignition/modules/All.ts",
     "deploy:local:counter": "hardhat ignition deploy ignition/modules/Counter.ts",
     "deploy:local:certs": "hardhat ignition deploy ignition/modules/Certificates.ts",
     "clean": "hardhat clean"
   },
-  "keywords": ["blockchain", "smart-contracts", "hardhat", "ethereum", "certificate", "pki"],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "blockchain",
+    "smart-contracts",
+    "hardhat",
+    "ethereum",
+    "certificate",
+    "pki"
+  ],
+  "author": "Daniel Agafonov, Brynn Crowley, Marcos Pantoja",
+  "license": "Apache-2.0",
   "packageManager": "pnpm@10.6.4",
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^4.0.2",
-    "@nomicfoundation/hardhat-ignition": "^3.0.0",
+    "@nomicfoundation/hardhat-ignition": "^3.0.3",
     "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.0",
     "@solidstate/hardhat-abi-exporter": "^3.0.1",
-    "@types/chai": "^4.2.0",
-    "@types/chai-as-promised": "^8.0.1",
-    "@types/mocha": ">=10.0.10",
-    "@types/node": "^22.8.5",
-    "chai": "^5.1.2",
+    "@types/node": "^22.18.13",
     "ethers": "^6.15.0",
     "forge-std": "github:foundry-rs/forge-std#v1.9.4",
     "hardhat": "^3.0.9",
-    "mocha": "^11.0.0",
-    "typescript": "~5.8.0"
+    "typescript": "~5.8.3"
   },
   "type": "module"
 }
