@@ -3,6 +3,7 @@ pragma solidity ^0.8.28;
 
 contract Certificates {
     struct Certificate {
+        string domain;
         string serialNumber;
         string ipfsCID;
         bytes32 certificateHash;
@@ -22,6 +23,7 @@ contract Certificates {
 
     // CertificateRegistered is thrown when a certificate is added to the chain
     event CertificateRegistered(
+        string domain,
         string indexed serialNumber,
         string ipfsCID,
         bytes32 certificateHash,
@@ -31,6 +33,7 @@ contract Certificates {
 
     // CertificateRevoked is thrown when a certificate is revoked
     event CertificateRevoked(
+        string indexed domain,
         string indexed serialNumber,
         address indexed revokedBy,
         uint256 timestamp
@@ -38,16 +41,19 @@ contract Certificates {
 
     //registerCertificate is used for adding a new certificate to the chain of trust
     function registerCertificate(
+        string memory domain,
         string memory serialNumber,
         string memory ipfsCID,
         bytes32 certificateHash
     ) public {
+        require(bytes(domain).length > 0, "Domain name cannot be empty");
         require(bytes(serialNumber).length > 0, "Serial number cannot be empty");
         require(bytes(ipfsCID).length > 0, "IPFS CID cannot be empty");
         require(certificateHash != bytes32(0), "Certificate hash cannot be empty");
         require(bytes(certificates[serialNumber].serialNumber).length == 0, "Certificate already registered");
 
         Certificate memory cert = Certificate({
+            domain: domain,
             serialNumber: serialNumber,
             ipfsCID: ipfsCID,
             certificateHash: certificateHash,
@@ -61,6 +67,7 @@ contract Certificates {
         allSerialNumbers.push(serialNumber);
 
         emit CertificateRegistered(
+            domain,
             serialNumber,
             ipfsCID,
             certificateHash,
@@ -78,11 +85,12 @@ contract Certificates {
 
         cert.revoked = true;
 
-        emit CertificateRevoked(serialNumber, msg.sender, block.timestamp);
+        emit CertificateRevoked(cert.domain, serialNumber, msg.sender, block.timestamp);
     }
 
     // getCertificate allows retrieval of a certificate by its serial number
     function getCertificate(string memory serialNumber) public view returns (
+        string memory,
         string memory,
         string memory,
         bytes32,
@@ -94,6 +102,7 @@ contract Certificates {
         require(bytes(cert.serialNumber).length > 0, "Certificate does not exist");
 
         return (
+            cert.domain,
             cert.serialNumber,
             cert.ipfsCID,
             cert.certificateHash,

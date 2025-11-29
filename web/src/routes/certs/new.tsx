@@ -10,12 +10,28 @@ import {
 } from "@/lib/contracts-utils";
 
 type UploadResult = {
+  domain?: string;
   success: boolean;
   message: string;
   txHash?: string;
   serialNumber?: string;
   ipfsCID?: string;
 };
+
+const extractDomain = (pemContent: string): string => {
+    // Look for CN= in the certificate
+    // Common patterns:
+    // Subject: CN=example.com
+    // Subject: C=US, ST=CA, O=Company, CN=example.com
+    const cnMatch = pemContent.match(/CN\s*=\s*([^,\n\/]+)/i);
+
+    if (cnMatch && cnMatch[1]) {
+      return cnMatch[1].trim();
+    }
+
+    // If not found, throw error
+    throw new Error('Could not extract domain from certificate. Certificate must contain a Common Name (CN).');
+  };
 
 // ---- PAGE COMPONENT ----
 function UploadCertificate(): JSX.Element {
@@ -46,6 +62,17 @@ function UploadCertificate(): JSX.Element {
       // Read file content
       const fileContent = await certFile.text();
 
+      // Extract domain from certificate
+      const domain = extractDomain(fileContent);
+
+      if (!domain) {
+        setResult({
+          success: false,
+          message: "Could not extract domain from certificate"
+        });
+        return;
+      }
+
       // Generate hash and serial number
       const certificateHash = hashCertificate(fileContent);
       const serialNumber = generateSerialNumber(certFile.name);
@@ -58,6 +85,7 @@ function UploadCertificate(): JSX.Element {
 
       // Register certificate on blockchain
       const tx = await contract.registerCertificate(
+        domain,
         serialNumber,
         ipfsCID,
         certificateHash,
@@ -72,6 +100,7 @@ function UploadCertificate(): JSX.Element {
         txHash: receipt.hash,
         serialNumber: serialNumber,
         ipfsCID: ipfsCID,
+        domain: domain,
       });
 
       // Clear file input
@@ -161,6 +190,11 @@ function UploadCertificate(): JSX.Element {
                 {result.serialNumber && (
                   <p className={`${styles.TEXT_MONO} mt-1 text-sm`}>
                     Serial: {result.serialNumber}
+                  </p>
+                )}
+                {result.domain && (
+                  <p className={`${styles.TEXT_MONO} mt-1 text-sm`}>
+                    Domain: {result.domain}
                   </p>
                 )}
                 {result.ipfsCID && (
