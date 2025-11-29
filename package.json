@@ -32,6 +32,6 @@
     "vite",
     "ethereum"
   ],
-  "author": "",
-  "license": "ISC"
+  "author": "Daniel Agafonov, Brynn Crowley, Marcos Pantoja",
+  "license": "Apache-2.0"
 }

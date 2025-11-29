@@ -4,7 +4,7 @@
  */
 
 // Layout
-export const CONTAINER = "max-w-4xl mx-auto p-6";
+export const CONTAINER = "max-w-2xl mx-auto p-6";
 export const CARD = "bg-card text-card-foreground rounded-lg shadow-md p-6";
 export const SECTION_SPACING = "space-y-6";
 

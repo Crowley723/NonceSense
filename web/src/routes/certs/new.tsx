@@ -1,13 +1,13 @@
-import React, { useState, type JSX } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
-import { Upload, XCircle, CheckCircle, FileText } from 'lucide-react';
-import * as styles from '@/lib/styles';
+import React, { useState, type JSX } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Upload, XCircle, CheckCircle, FileText } from "lucide-react";
+import * as styles from "@/lib/styles";
 import {
   getCertificatesContractWithSigner,
   hashCertificate,
   generateSerialNumber,
   IPFSUpload,
-} from '@/lib/contracts-utils';
+} from "@/lib/contracts-utils";
 
 type UploadResult = {
   success: boolean;
@@ -32,7 +32,10 @@ function UploadCertificate(): JSX.Element {
     e.preventDefault();
 
     if (!certFile) {
-      setResult({ success: false, message: 'Please select a certificate file.' });
+      setResult({
+        success: false,
+        message: "Please select a certificate file.",
+      });
       return;
     }
 
@@ -47,9 +50,8 @@ function UploadCertificate(): JSX.Element {
       const certificateHash = hashCertificate(fileContent);
       const serialNumber = generateSerialNumber(certFile.name);
 
-      // IPFS upload - stores in local IPFS node and returns CID
+      // Upload to IPFS and get CID
       const ipfsCID = await IPFSUpload(fileContent);
-      console.log('IPFS CID:', ipfsCID);
 
       // Get contract instance
       const contract = await getCertificatesContractWithSigner();
@@ -58,7 +60,7 @@ function UploadCertificate(): JSX.Element {
       const tx = await contract.registerCertificate(
         serialNumber,
         ipfsCID,
-        certificateHash
+        certificateHash,
       );
 
       // Wait for transaction confirmation
@@ -66,7 +68,7 @@ function UploadCertificate(): JSX.Element {
 
       setResult({
         success: true,
-        message: 'Certificate registered successfully!',
+        message: "Certificate registered successfully!",
         txHash: receipt.hash,
         serialNumber: serialNumber,
         ipfsCID: ipfsCID,
@@ -74,10 +76,11 @@ function UploadCertificate(): JSX.Element {
 
       // Clear file input
     } catch (err) {
-      console.error('Upload error:', err);
+      console.error("Upload error:", err);
       setResult({
         success: false,
-        message: err instanceof Error ? err.message : 'Failed to upload certificate',
+        message:
+          err instanceof Error ? err.message : "Failed to upload certificate",
       });
     } finally {
       setLoading(false);
@@ -93,10 +96,11 @@ function UploadCertificate(): JSX.Element {
       </div>
 
       <div className={styles.CARD}>
-
         <form onSubmit={handleUpload} className={styles.SECTION_SPACING}>
           <div>
-            <label className={styles.LABEL}>Certificate File (.pem, .crt)</label>
+            <label className={styles.LABEL}>
+              Certificate File (.pem, .crt)
+            </label>
             <div className={styles.FILE_UPLOAD_AREA}>
               <input
                 type="file"
@@ -107,9 +111,11 @@ function UploadCertificate(): JSX.Element {
                 required
               />
               <label htmlFor="cert-upload" className="cursor-pointer">
-                <FileText className={`${styles.ICON_LARGE} ${styles.ICON_MUTED} mx-auto mb-2`} />
+                <FileText
+                  className={`${styles.ICON_LARGE} ${styles.ICON_MUTED} mx-auto mb-2`}
+                />
                 <p className={styles.TEXT_SMALL}>
-                  {certFile ? certFile.name : 'Click to upload certificate'}
+                  {certFile ? certFile.name : "Click to upload certificate"}
                 </p>
               </label>
             </div>
@@ -135,25 +141,31 @@ function UploadCertificate(): JSX.Element {
         </form>
 
         {result && (
-          <div className={result.success ? styles.MESSAGE_SUCCESS : styles.MESSAGE_ERROR}>
+          <div
+            className={
+              result.success ? styles.MESSAGE_SUCCESS : styles.MESSAGE_ERROR
+            }
+          >
             <div className="flex gap-2">
               {result.success ? (
-                <CheckCircle className={`${styles.ICON_SMALL} ${styles.ICON_SUCCESS}`} />
+                <CheckCircle
+                  className={`${styles.ICON_SMALL} ${styles.ICON_SUCCESS}`}
+                />
               ) : (
-                <XCircle className={`${styles.ICON_SMALL} ${styles.ICON_DESTRUCTIVE}`} />
+                <XCircle
+                  className={`${styles.ICON_SMALL} ${styles.ICON_DESTRUCTIVE}`}
+                />
               )}
               <div className="w-full">
-                <p className="font-semibold">
-                  {result.message}
-                </p>
+                <p className="font-semibold">{result.message}</p>
                 {result.serialNumber && (
                   <p className={`${styles.TEXT_MONO} mt-1 text-sm`}>
                     Serial: {result.serialNumber}
                   </p>
                 )}
                 {result.ipfsCID && (
-                  <p className={`${styles.TEXT_MONO} mt-1 text-sm break-all`}>
-                    IPFS: {result.ipfsCID}
+                  <p className={`${styles.TEXT_MONO} mt-1 text-sm`}>
+                    IPFS: {result.ipfsCID.slice(0, 20)}...
                   </p>
                 )}
                 {result.txHash && (
@@ -171,6 +183,6 @@ function UploadCertificate(): JSX.Element {
 }
 
 // ---- ROUTE ----
-export const Route = createFileRoute('/certs/new')({
+export const Route = createFileRoute("/certs/new")({
   component: UploadCertificate,
 });

@@ -11,8 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserCounterRouteImport } from './routes/user/counter'
-import { Route as DomainRegisterRouteImport } from './routes/domain/register'
-import { Route as DomainCompleteRouteImport } from './routes/domain/complete'
 import { Route as CertsViewRouteImport } from './routes/certs/view'
 import { Route as CertsRevokeRouteImport } from './routes/certs/revoke'
 import { Route as CertsNewRouteImport } from './routes/certs/new'
@@ -25,16 +23,6 @@ const IndexRoute = IndexRouteImport.update({
 const UserCounterRoute = UserCounterRouteImport.update({
   id: '/user/counter',
   path: '/user/counter',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DomainRegisterRoute = DomainRegisterRouteImport.update({
-  id: '/domain/register',
-  path: '/domain/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DomainCompleteRoute = DomainCompleteRouteImport.update({
-  id: '/domain/complete',
-  path: '/domain/complete',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CertsViewRoute = CertsViewRouteImport.update({
@@ -58,8 +46,6 @@ export interface FileRoutesByFullPath {
   '/certs/new': typeof CertsNewRoute
   '/certs/revoke': typeof CertsRevokeRoute
   '/certs/view': typeof CertsViewRoute
-  '/domain/complete': typeof DomainCompleteRoute
-  '/domain/register': typeof DomainRegisterRoute
   '/user/counter': typeof UserCounterRoute
 }
 export interface FileRoutesByTo {
@@ -67,8 +53,6 @@ export interface FileRoutesByTo {
   '/certs/new': typeof CertsNewRoute
   '/certs/revoke': typeof CertsRevokeRoute
   '/certs/view': typeof CertsViewRoute
-  '/domain/complete': typeof DomainCompleteRoute
-  '/domain/register': typeof DomainRegisterRoute
   '/user/counter': typeof UserCounterRoute
 }
 export interface FileRoutesById {
@@ -77,8 +61,6 @@ export interface FileRoutesById {
   '/certs/new': typeof CertsNewRoute
   '/certs/revoke': typeof CertsRevokeRoute
   '/certs/view': typeof CertsViewRoute
-  '/domain/complete': typeof DomainCompleteRoute
-  '/domain/register': typeof DomainRegisterRoute
   '/user/counter': typeof UserCounterRoute
 }
 export interface FileRouteTypes {
@@ -88,26 +70,15 @@ export interface FileRouteTypes {
     | '/certs/new'
     | '/certs/revoke'
     | '/certs/view'
-    | '/domain/complete'
-    | '/domain/register'
     | '/user/counter'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/certs/new'
-    | '/certs/revoke'
-    | '/certs/view'
-    | '/domain/complete'
-    | '/domain/register'
-    | '/user/counter'
+  to: '/' | '/certs/new' | '/certs/revoke' | '/certs/view' | '/user/counter'
   id:
     | '__root__'
     | '/'
     | '/certs/new'
     | '/certs/revoke'
     | '/certs/view'
-    | '/domain/complete'
-    | '/domain/register'
     | '/user/counter'
   fileRoutesById: FileRoutesById
 }
@@ -116,8 +87,6 @@ export interface RootRouteChildren {
   CertsNewRoute: typeof CertsNewRoute
   CertsRevokeRoute: typeof CertsRevokeRoute
   CertsViewRoute: typeof CertsViewRoute
-  DomainCompleteRoute: typeof DomainCompleteRoute
-  DomainRegisterRoute: typeof DomainRegisterRoute
   UserCounterRoute: typeof UserCounterRoute
 }
 
@@ -135,20 +104,6 @@ declare module '@tanstack/react-router' {
       path: '/user/counter'
       fullPath: '/user/counter'
       preLoaderRoute: typeof UserCounterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/domain/register': {
-      id: '/domain/register'
-      path: '/domain/register'
-      fullPath: '/domain/register'
-      preLoaderRoute: typeof DomainRegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/domain/complete': {
-      id: '/domain/complete'
-      path: '/domain/complete'
-      fullPath: '/domain/complete'
-      preLoaderRoute: typeof DomainCompleteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/certs/view': {
@@ -180,8 +135,6 @@ const rootRouteChildren: RootRouteChildren = {
   CertsNewRoute: CertsNewRoute,
   CertsRevokeRoute: CertsRevokeRoute,
   CertsViewRoute: CertsViewRoute,
-  DomainCompleteRoute: DomainCompleteRoute,
-  DomainRegisterRoute: DomainRegisterRoute,
   UserCounterRoute: UserCounterRoute,
 }
 export const routeTree = rootRouteImport
