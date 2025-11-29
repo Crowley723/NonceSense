@@ -49,6 +49,7 @@ function UploadCertificate(): JSX.Element {
 
       // IPFS upload - stores in local IPFS node and returns CID
       const ipfsCID = await IPFSUpload(fileContent);
+      console.log('IPFS CID:', ipfsCID);
 
       // Get contract instance
       const contract = await getCertificatesContractWithSigner();
@@ -151,8 +152,8 @@ function UploadCertificate(): JSX.Element {
                   </p>
                 )}
                 {result.ipfsCID && (
-                  <p className={`${styles.TEXT_MONO} mt-1 text-sm`}>
-                    IPFS: {result.ipfsCID.slice(0, 20)}...
+                  <p className={`${styles.TEXT_MONO} mt-1 text-sm break-all`}>
+                    IPFS: {result.ipfsCID}
                   </p>
                 )}
                 {result.txHash && (
