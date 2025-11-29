@@ -14,6 +14,7 @@
     message: string;
     txHash?: string;
     serialNumber?: string;
+    domain?: string;
   };
 
   // ---- PAGE COMPONENT ----
