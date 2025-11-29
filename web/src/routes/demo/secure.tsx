@@ -34,20 +34,16 @@ function SecurePage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="font-semibold text-muted-foreground">Issued To:</p>
-                <p className="font-mono">secure.example.com</p>
-              </div>
-              <div>
-                <p className="font-semibold text-muted-foreground">Issued By:</p>
-                <p className="font-mono">Nonce Sense CA</p>
+                <p className="font-semibold text-muted-foreground">Owner:</p>
+                <p className="font-mono text-xs">0xAbCd...1234</p>
               </div>
               <div>
                 <p className="font-semibold text-muted-foreground">Serial Number:</p>
                 <p className="font-mono text-xs">0x1234...5678</p>
               </div>
               <div>
-                <p className="font-semibold text-muted-foreground">Valid Until:</p>
-                <p className="font-mono">2025-12-31</p>
+                <p className="font-semibold text-muted-foreground">Certificate Hash:</p>
+                <p className="font-mono text-xs">0xDeFa...9876</p>
               </div>
               <div>
                 <p className="font-semibold text-muted-foreground">IPFS CID:</p>
