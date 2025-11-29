@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
@@ -13,6 +14,12 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import {
+  generateTestCertificates,
+  revokeRandomCertificates,
+} from "@/lib/test-data.ts";
+import { useState } from "react";
+import { GenerateTestDataModal } from "@/components/generate-test-data-modal.tsx";
 
 const data = {
   navMain: [
@@ -27,20 +34,6 @@ const data = {
       ],
     },
     {
-      title: "Website Owner",
-      url: "#",
-      items: [
-        {
-          title: "Start Validation",
-          url: "/domain/register",
-        },
-        {
-          title: "Complete Validation",
-          url: "/domain/complete",
-        },
-      ],
-    },
-    {
       title: "Certificates",
       url: "#",
       items: [
@@ -49,8 +42,12 @@ const data = {
           url: "/certs/new",
         },
         {
-          title: "View/Validate Certificate",
+          title: "View Certificate",
           url: "/certs/view",
+        },
+        {
+          title: "Validate Certificate",
+          url: "/certs/validate",
         },
         {
           title: "Revoke Certificate",
@@ -62,6 +59,8 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <Sidebar variant="floating" {...props}>
       <SidebarHeader>
@@ -104,6 +103,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <button onClick={() => setShowModal(true)}>Generate Test Data</button>
+
+        <GenerateTestDataModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onConfirm={async () => {
+            await generateTestCertificates(20);
+            await revokeRandomCertificates(5);
+            setShowModal(false);
+          }}
+        />
+      </SidebarFooter>
     </Sidebar>
   );
 }
