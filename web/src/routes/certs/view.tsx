@@ -192,6 +192,10 @@ function RouteComponent() {
                   <label className="text-xs text-muted-foreground">Owner</label>
                   <p className="text-sm font-mono">{cert.owner}</p>
                 </div>
+                <div>
+                  <label className="text-xs text-muted-foreground">Domain</label>
+                    <p className="text-sm font-mono">{cert.domain || 'N/A'}</p>
+                </div>
               </div>
               <details className="group">
                 <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground list-none flex items-center gap-1">

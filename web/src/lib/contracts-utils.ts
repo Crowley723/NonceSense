@@ -14,6 +14,7 @@ export const CERTIFICATES_ADDRESS =
   deployedAddresses["CertificatesModule#Certificates"];
 
 export interface Certificate {
+  domain: string;
   serialNumber: string;
   ipfsCID: string;
   certificateHash: string;
@@ -81,11 +82,11 @@ export async function getIPFSFile(cidString: string): Promise<string | null> {
   try {
     const { fs } = await initHelia();
 
-    // Parse string to CID object - this fixes the TypeScript error
+    // Parse string to CID object
     const cid = CID.parse(cidString);
 
     const chunks: Uint8Array[] = [];
-    for await (const chunk of fs.cat(cid)) {  // Now accepts CID object
+    for await (const chunk of fs.cat(cid)) { 
       chunks.push(chunk);
     }
 
@@ -164,12 +165,13 @@ export async function getAllCertificates(): Promise<Certificate[]> {
   const certPromises = serialNumbers.map(async (serialNumber) => {
     const cert = await contract.getCertificate(serialNumber);
     return {
-      serialNumber: cert[0],
-      ipfsCID: cert[1],
-      certificateHash: cert[2],
-      owner: cert[3],
-      timestamp: cert[4],
-      revoked: cert[5],
+      domain: cert[0],
+      serialNumber: cert[1],
+      ipfsCID: cert[2],
+      certificateHash: cert[3],
+      owner: cert[4],
+      timestamp: cert[5],
+      revoked: cert[6],
     };
   });
 
