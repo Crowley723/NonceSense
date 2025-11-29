@@ -18,7 +18,7 @@ type UploadResult = {
   ipfsCID?: string;
 };
 
-const extractDomain = (pemContent: string): string => {
+const extractDomain = (certificateContent: string): string => {
     // Look for CN= in the certificate
     // Common patterns:
     // Subject: CN=example.com
