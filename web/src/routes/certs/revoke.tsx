@@ -1,13 +1,21 @@
-  import React, { useState, useEffect, type JSX } from "react";
+  import React, { useState, useEffect, useMemo, type JSX } from "react";
   import { createFileRoute } from "@tanstack/react-router";
   import { AlertTriangle, XCircle, CheckCircle, Trash2 } from "lucide-react";
   import * as styles from "@/lib/styles";
   import {
     getCertificatesContract,
     getCertificatesContractWithSigner,
-    getSigner,
+    getAllCertificates,
     type Certificate,
   } from "@/lib/contracts-utils";
+  import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select.tsx";
+  import { JsonRpcProvider } from "ethers";
 
   type RevokeResult = {
     success: boolean;
@@ -19,58 +27,70 @@
 
   // ---- PAGE COMPONENT ----
   function RevokeCertificate(): JSX.Element {
-    const [userAddress, setUserAddress] = useState<string>("");
-    const [userCertificates, setUserCertificates] = useState<Certificate[]>([]);
+    const [selectedWallet, setSelectedWallet] = useState<string>("");
+    const [wallets, setWallets] = useState<string[]>([]);
+    const [certificates, setCertificates] = useState<Certificate[]>([]);
     const [selectedSerial, setSelectedSerial] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingCerts, setLoadingCerts] = useState<boolean>(true);
     const [showConfirm, setShowConfirm] = useState<boolean>(false);
     const [result, setResult] = useState<RevokeResult | null>(null);
 
-    // Load user's certificates on mount
+    // Load wallets and certificates on mount
     useEffect(() => {
-      loadUserCertificates();
+      loadWallets();
+      loadCertificates();
     }, []);
 
-    const loadUserCertificates = async () => {
+    const loadWallets = async () => {
+      try {
+        setLoading(true);
+        const provider = new JsonRpcProvider("http://127.0.0.1:8545");
+        const accounts: string[] = [];
+
+        for (let i = 0; i < 10; i++) {
+          try {
+            const signer = await provider.getSigner(i);
+            const address = await signer.getAddress();
+            accounts.push(address);
+          } catch {
+            break;
+          }
+        }
+
+        setWallets(accounts);
+      } catch (error) {
+        console.error("Error loading wallets:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const loadCertificates = async () => {
       try {
         setLoadingCerts(true);
-        const signer = await getSigner();
-        const address = await signer.getAddress();
-        setUserAddress(address);
-
-        const contract = getCertificatesContract();
-        const serialNumbers = await contract.getOwnerCertificates(address);
-
-        // Fetch certificate details for each serial number
-        const certPromises = serialNumbers.map(async (serial: string) => {
-          const cert = await contract.getCertificate(serial);
-          return {
-            domain: cert[0],
-            serialNumber: cert[1],
-            ipfsCID: cert[2],
-            certificateHash: cert[3],
-            owner: cert[4],
-            timestamp: cert[5],
-            revoked: cert[6],
-          };
-        });
-
-        const certs = await Promise.all(certPromises);
-
-        // Filter to show only active (non-revoked) certificates
-        const activeCerts = certs.filter((cert) => !cert.revoked);
-        setUserCertificates(activeCerts);
+        setCertificates(await getAllCertificates());
       } catch (error) {
         console.error("Error loading certificates:", error);
-        setResult({
-          success: false,
-          message: "Failed to load your certificates",
-        });
       } finally {
         setLoadingCerts(false);
       }
     };
+
+    // Filter certificates by selected wallet and show only active (non-revoked)
+    const filteredCertificates = useMemo(() => {
+      let filtered = certificates;
+
+      // Filter by wallet if selected
+      if (selectedWallet) {
+        filtered = filtered.filter(
+          (certificate) => certificate.owner.toString() === selectedWallet.toString()
+        );
+      }
+
+      // Filter to show only active (non-revoked) certificates
+      return filtered.filter((cert) => !cert.revoked);
+    }, [certificates, selectedWallet]);
 
     const handleRevoke = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -97,7 +117,15 @@
         const contract = getCertificatesContract();
         const cert = await contract.getCertificate(selectedSerial);
 
-        if (cert[4] !== userAddress) {
+        if (!selectedWallet) {
+          setResult({
+            success: false,
+            message: "Please select a wallet first",
+          });
+          return;
+        }
+
+        if (cert[4] !== selectedWallet) {
           setResult({
             success: false,
             message: "You do not own this certificate",
@@ -113,8 +141,11 @@
           return;
         }
 
-        // Revoke on blockchain
-        const contractWithSigner = await getCertificatesContractWithSigner();
+        // Revoke on blockchain - get signer for the selected wallet
+        const provider = new JsonRpcProvider("http://127.0.0.1:8545");
+        const walletIndex = wallets.indexOf(selectedWallet);
+        const signer = await provider.getSigner(walletIndex);
+        const contractWithSigner = await getCertificatesContractWithSigner(signer);
         const tx = await contractWithSigner.revokeCertificate(selectedSerial);
 
         // Wait for transaction confirmation
@@ -128,7 +159,7 @@
         });
 
         // Reload certificates to update the list
-        await loadUserCertificates();
+        await loadCertificates();
 
         // Clear selection
         setSelectedSerial("");
@@ -163,28 +194,49 @@
           <h2 className={styles.HEADING_LARGE}>Revoke Certificate</h2>
         </div>
 
+        {/* Wallet Selector */}
+        <div className="flex justify-center items-center mb-4 gap-2">
+          <label>Select a wallet: </label>
+          <Select value={selectedWallet} onValueChange={setSelectedWallet}>
+            <SelectTrigger className="">
+              <SelectValue placeholder="---" />
+            </SelectTrigger>
+            <SelectContent>
+              {wallets.map((wallet) => (
+                <SelectItem key={wallet} value={wallet}>
+                  {wallet}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className={styles.CARD}>
           {/* User Info */}
-          <div className="mb-6 p-4 bg-muted rounded-lg">
-            <p className={styles.TEXT_SMALL}>Connected Wallet</p>
-            <p className={`${styles.TEXT_MONO} text-sm mt-1`}>
-              {userAddress || "Loading..."}
-            </p>
-          </div>
+          {selectedWallet && (
+            <div className="mb-6 p-4 bg-muted rounded-lg">
+              <p className={styles.TEXT_SMALL}>Selected Wallet</p>
+              <p className={`${styles.TEXT_MONO} text-sm mt-1`}>
+                {selectedWallet}
+              </p>
+            </div>
+          )}
 
           {/* Loading State */}
           {loadingCerts ? (
             <div className="flex flex-col items-center justify-center py-12">
               <div className={styles.SPINNER} />
-              <p className={`${styles.TEXT_SMALL} mt-4`}>Loading your certificates...</p>
+              <p className={`${styles.TEXT_SMALL} mt-4`}>Loading certificates...</p>
             </div>
-          ) : userCertificates.length === 0 ? (
+          ) : filteredCertificates.length === 0 ? (
             /* No Certificates */
             <div className="text-center py-12">
               <AlertTriangle className={`${styles.ICON_LARGE} ${styles.ICON_MUTED} mx-auto mb-4`} />
               <p className="text-lg font-semibold mb-2">No Active Certificates</p>
               <p className={styles.TEXT_SMALL}>
-                You don't have any active certificates to revoke.
+                {selectedWallet
+                  ? "This wallet doesn't have any active certificates to revoke."
+                  : "Select a wallet to view certificates."}
               </p>
             </div>
           ) : (
@@ -192,12 +244,12 @@
             <form onSubmit={handleRevoke} className={styles.SECTION_SPACING}>
               <div>
                 <label className={styles.LABEL}>
-                  Select Certificate to Revoke ({userCertificates.length} active)
+                  Select Certificate to Revoke ({filteredCertificates.length} active)
                 </label>
 
                 {/* Certificate Selection - Radio Buttons */}
                 <div className="space-y-3">
-                  {userCertificates.map((cert) => (
+                  {filteredCertificates.map((cert) => (
                     <label
                       key={cert.serialNumber}
                       className={`flex items-start gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all ${
