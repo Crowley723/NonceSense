@@ -23,7 +23,7 @@ const extractDomain = (pemContent: string): string => {
     // Common patterns:
     // Subject: CN=example.com
     // Subject: C=US, ST=CA, O=Company, CN=example.com
-    const cnMatch = pemContent.match(/CN\s*=\s*([^,\n\/]+)/i);
+    const cnMatch = certificateContent.match(/CN\s*=\s*([^,\n\/]+)/i);
 
     if (cnMatch && cnMatch[1]) {
       return cnMatch[1].trim();
