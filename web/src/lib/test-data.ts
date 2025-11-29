@@ -3,7 +3,7 @@ import {
   getCertificatesContractWithSigner,
   getSigner,
   hashCertificate,
-  mockIPFSUpload,
+  IPFSUpload,
 } from "@/lib/contracts-utils.ts";
 import { JsonRpcProvider } from "ethers";
 
@@ -42,7 +42,7 @@ export async function generateTestCertificates(count: number) {
     const fileContent = `This is test certificate number ${i + 1}\nIssued to: ${randomAddress}\nDate: ${new Date().toISOString()}`;
 
     const serialNumber = generateSerialNumber(fileName);
-    const ipfsCID = mockIPFSUpload(fileContent, fileName);
+    const ipfsCID = IPFSUpload(fileContent);
     const certHash = hashCertificate(fileContent);
 
     const tx = await contract.registerCertificate(

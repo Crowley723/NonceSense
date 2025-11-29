@@ -6,7 +6,7 @@ import {
   getCertificatesContractWithSigner,
   hashCertificate,
   generateSerialNumber,
-  mockIPFSUpload,
+  IPFSUpload,
 } from "@/lib/contracts-utils";
 
 type UploadResult = {
@@ -50,9 +50,8 @@ function UploadCertificate(): JSX.Element {
       const certificateHash = hashCertificate(fileContent);
       const serialNumber = generateSerialNumber(certFile.name);
 
-      // Mock IPFS upload - stores locally and returns fake CID
-      // TODO: update certificate download format when we use actual ipfs
-      const ipfsCID = mockIPFSUpload(fileContent, certFile.name);
+      // Upload to IPFS and get CID
+      const ipfsCID = await IPFSUpload(fileContent);
 
       // Get contract instance
       const contract = await getCertificatesContractWithSigner();
