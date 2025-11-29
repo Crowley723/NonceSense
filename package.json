@@ -13,9 +13,9 @@
     "test": "pnpm test:contracts && pnpm test:web",
     "test:contracts": "cd contracts && npx hardhat test",
     "test:web": "cd web && pnpm run lint",
-    "deploy:local": "cd contracts && npx hardhat ignition deploy ignition/modules/All.ts --network localhost && cp ignition/deployments/chain-31337/deployed_addresses.json ../web/src/contracts/deployed_addresses.json",
+    "deploy:local": "cd contracts && npx hardhat ignition deploy ignition/modules/All.ts --network localhost && node -e \"const artifact = require('./artifacts/contracts/Certificates.sol/Certificates.json'); const fs = require('fs'); fs.writeFileSync('../web/src/contracts/Certificates.json', JSON.stringify(artifact.abi, null, 2));\" && cp ignition/deployments/chain-31337/deployed_addresses.json ../web/src/contracts/deployed_addresses.json",
     "deploy:local:counter": "cd contracts && npx hardhat ignition deploy ignition/modules/Counter.ts --network localhost && cp ignition/deployments/chain-31337/deployed_addresses.json ../web/src/contracts/deployed_addresses.json",
-    "deploy:local:certificates": "cd contracts && npx hardhat ignition deploy ignition/modules/Certificates.ts --network localhost && cp ignition/deployments/chain-31337/deployed_addresses.json ../web/src/contracts/deployed_addresses.json",
+    "deploy:local:certificates": "cd contracts && npx hardhat ignition deploy ignition/modules/Certificates.ts --network localhost && node -e \"const artifact = require('./artifacts/contracts/Certificates.sol/Certificates.json'); const fs = require('fs'); fs.writeFileSync('../web/src/contracts/Certificates.json', JSON.stringify(artifact.abi, null, 2));\" && cp ignition/deployments/chain-31337/deployed_addresses.json ../web/src/contracts/deployed_addresses.json",
     "clean": "pnpm --filter nonce-sense clean && cd contracts && npx hardhat clean"
   },
   "workspaces": [
