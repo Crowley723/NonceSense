@@ -64,14 +64,12 @@ function RootComponent() {
     setSecurityStatus(status);
   };
 
-  // Load all certificates on component mount, but only on index route
   useEffect(() => {
     if (isIndexRoute) {
       loadCertificates().then(() => {});
     }
   }, [isIndexRoute]);
 
-  // Handle pending certificate check after navigation and certificate loading
   useEffect(() => {
     if (isIndexRoute && pendingCheck && certificates.length > 0) {
       performCertificateCheck(pendingCheck);
@@ -229,9 +227,9 @@ function RootComponent() {
   const DefaultContent = () => (
     <div className="container mx-auto p-6 max-w-4xl">
       <div className="text-center space-y-6">
-        <div className="flex items-center justify-center gap-3">
+        <div className="text-center">
           <h1 className="text-4xl font-bold">Blockchain Based Certificates</h1>
-          <h6 className="text-xs">
+          <h6 className="text-sm text-muted-foreground mt-2">
             Team Nonce Sense: Daniel A, Marcos P, Brynn C
           </h6>
         </div>
