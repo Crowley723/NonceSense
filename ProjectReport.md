@@ -1,11 +1,11 @@
 # CSC196D: Project Report
 ## Nonce Sense - Decentralized PKI on Blockchain
 
-| Member          | Responsibilities |
-| --------------- | ---------------- |
-| Brynn Crowley   | TODO             |
-| Marcos Pantoja  | TODO             |
-| Daniel Agafonov | TODO             |
+| Member          | Responsibilities                                                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Brynn Crowley   | TODO                                                                                                                              |
+| Marcos Pantoja  | Implemented local IPFS using Helia, Web3 Integration, smart contract development, created contracts-utils.ts, new.tsx, revoke.tsx |
+| Daniel Agafonov | TODO                                                                                                                              |
 
 ## Introduction
 
@@ -100,16 +100,35 @@ When a user visits the website, the browser receives the certificate during TLS 
 ---
 ## User Interface Overview
 
-TODO
+This web application provides three main pages to manage certificates:
+
+**Upload Page (`/certs/new`)** 
+The purpose of this page is for users to register a new certificate on the blockchain. It allows a user to upload a .pem, .crt, or .cer file to be stored via IPFS. Once the certificate is registered it is assigned a serial number, shows the Domain that is registered, the IPFS string, and the blockchain transaction number.
+
+![[Pasted image 20251130002406.png]]
+
+**View Page (`/certs/view`)**
+The purpose of this page is to view all registered certificates across all wallets as well as individual wallets through a drop-down. Each certificate card shows a status badge that shows whether that certificate is valid or revoked, a download button that allows you to retrieve the file from IFPS, a registration timestamp, the owner of the certificate, the domain name, and finally a details sub tab that has more information on the certificate such as the certificates serial number.
+
+![[Pasted image 20251130003618.png]]
+
+**Revoke Page (`/certs/revoke`)**
+The purpose of the certificate revocation page is to revoke registered certificates from the blockchain. The application allows you to select a wallet through the drop-down to revoke certificates on that specific wallet. There is then a selection page for active certificates as well as a manual serial number entry method of revocation. 
+
+![[Pasted image 20251130004323.png]]
+
+Paired with the revocation page is a confirmation page that when you clicks revoke, allows you to confirm the serial number and then revoke the certificate.
+
+![[Pasted image 20251130004718.png]]
 
 ---
 ## Smart Contract Functions
 
-**registerCertificate(serialNumber, ipfsCID, certificateHash)**
+**registerCertificate(domain, serialNumber, ipfsCID, certificateHash)**
 - Registers a new certificate on the blockchain
 - Validates all required parameters are non-empty
 - Ensures certificate is not already registered
-- Stores certificate metadata including owner address and timestamp
+- Stores certificate metadata including domain, owner address and timestamp
 - Associates certificate with owner's address
 - Adds serial number to global list of all certificates
 - Emits CertificateRegistered event
@@ -123,7 +142,7 @@ TODO
 
 **getCertificate(serialNumber)**
 - Retrieves complete certificate information by serial number
-- Returns: serialNumber, ipfsCID, certificateHash, owner, timestamp, revoked status
+- Returns: domain, serialNumber, ipfsCID, certificateHash, owner, timestamp, revoked status
 - Requires certificate to exist
 - View function (no gas cost when called externally)
 
@@ -151,6 +170,7 @@ TODO
 (Mermaid Diagram Here)
 
 **On-Chain (expensive, small data):**
+- Domain name (CN from certificate)
 - Certificate fingerprint (SHA-256 hash)
 - Domain name
 - Validity dates (notBefore, notAfter)
@@ -169,25 +189,6 @@ This approach keeps gas costs low while maintaining full certificate data availa
 ## Client Validation Flow
 
 (Mermaid Diagram Here)
-
----
-## Setup and Development
-
-**Prerequisites**
-- Node.js v18 or higher
-- pnpm v10.6.4 or compatible
-
-**Installation**
-```bash
-pnpm install
-```
-
-**Development (requires 2 terminals)**
-
-Terminal 1 - Start local blockchain:
-```bash
-pnpm dev:contracts
-```
 
 Terminal 2 - Deploy and run frontend:
 ```bash
@@ -216,10 +217,10 @@ The web interface will be available at `http://localhost:5173`.
 ## Challenges and Outcomes
 
 **Accomplishments**
-- TODO
+In terms of our accomplishments we were able to implement the end-to-end certificate life cycle of registration, verification, revocation. We were also successfully able to create a fully  functioning smart contract with Solidity tests. This smart contract successfully stores, returns and revokes the certificates stored on the blockchain. We were able to build an interactive UI that allowed for the revocation, registration and verification of certificates through an easy to use UI. We were able to successfully integrate IPFS using Helia for decentralized storage that in our PoC stores locally. Overall we were able to achieve a transparent, immutable certificate management using blockchain technologies. 
 
 **Challenges Faced**
-- TODO
+
 
 **Remaining Work**
 - TODO
