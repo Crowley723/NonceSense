@@ -45,7 +45,9 @@ export async function generateTestCertificates(count: number) {
     const ipfsCID = IPFSUpload(fileContent);
     const certHash = hashCertificate(fileContent);
 
+    const domain = `example${i + 1}.com`;
     const tx = await contract.registerCertificate(
+      domain,
       serialNumber,
       ipfsCID,
       certHash,
@@ -74,7 +76,7 @@ export async function revokeRandomCertificates(count: number) {
     return;
   }
 
-  const toRevoke = Math.min(count, serialNumbers.length / 2);
+  const toRevoke = Math.min(count, serialNumbers.length);
   const shuffled = [...serialNumbers].sort(() => Math.random() - 0.5);
 
   console.log(`Revoking ${toRevoke} random certificates...`);

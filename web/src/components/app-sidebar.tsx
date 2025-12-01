@@ -24,20 +24,6 @@ import { GenerateTestDataModal } from "@/components/generate-test-data-modal.tsx
 const data = {
   navMain: [
     {
-      title: "Demo Pages",
-      url: "#",
-      items: [
-        {
-          title: "Secure Page",
-          url: "/demo/secure",
-        },
-        {
-          title: "Insecure Page",
-          url: "/demo/insecure",
-        },
-      ],
-    },
-    {
       title: "Normal User",
       url: "#",
       items: [

@@ -11,8 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserCounterRouteImport } from './routes/user/counter'
-import { Route as DemoSecureRouteImport } from './routes/demo/secure'
-import { Route as DemoInsecureRouteImport } from './routes/demo/insecure'
 import { Route as CertsViewRouteImport } from './routes/certs/view'
 import { Route as CertsRevokeRouteImport } from './routes/certs/revoke'
 import { Route as CertsNewRouteImport } from './routes/certs/new'
@@ -25,16 +23,6 @@ const IndexRoute = IndexRouteImport.update({
 const UserCounterRoute = UserCounterRouteImport.update({
   id: '/user/counter',
   path: '/user/counter',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoSecureRoute = DemoSecureRouteImport.update({
-  id: '/demo/secure',
-  path: '/demo/secure',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoInsecureRoute = DemoInsecureRouteImport.update({
-  id: '/demo/insecure',
-  path: '/demo/insecure',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CertsViewRoute = CertsViewRouteImport.update({
@@ -58,8 +46,6 @@ export interface FileRoutesByFullPath {
   '/certs/new': typeof CertsNewRoute
   '/certs/revoke': typeof CertsRevokeRoute
   '/certs/view': typeof CertsViewRoute
-  '/demo/insecure': typeof DemoInsecureRoute
-  '/demo/secure': typeof DemoSecureRoute
   '/user/counter': typeof UserCounterRoute
 }
 export interface FileRoutesByTo {
@@ -67,8 +53,6 @@ export interface FileRoutesByTo {
   '/certs/new': typeof CertsNewRoute
   '/certs/revoke': typeof CertsRevokeRoute
   '/certs/view': typeof CertsViewRoute
-  '/demo/insecure': typeof DemoInsecureRoute
-  '/demo/secure': typeof DemoSecureRoute
   '/user/counter': typeof UserCounterRoute
 }
 export interface FileRoutesById {
@@ -77,8 +61,6 @@ export interface FileRoutesById {
   '/certs/new': typeof CertsNewRoute
   '/certs/revoke': typeof CertsRevokeRoute
   '/certs/view': typeof CertsViewRoute
-  '/demo/insecure': typeof DemoInsecureRoute
-  '/demo/secure': typeof DemoSecureRoute
   '/user/counter': typeof UserCounterRoute
 }
 export interface FileRouteTypes {
@@ -88,26 +70,15 @@ export interface FileRouteTypes {
     | '/certs/new'
     | '/certs/revoke'
     | '/certs/view'
-    | '/demo/insecure'
-    | '/demo/secure'
     | '/user/counter'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/certs/new'
-    | '/certs/revoke'
-    | '/certs/view'
-    | '/demo/insecure'
-    | '/demo/secure'
-    | '/user/counter'
+  to: '/' | '/certs/new' | '/certs/revoke' | '/certs/view' | '/user/counter'
   id:
     | '__root__'
     | '/'
     | '/certs/new'
     | '/certs/revoke'
     | '/certs/view'
-    | '/demo/insecure'
-    | '/demo/secure'
     | '/user/counter'
   fileRoutesById: FileRoutesById
 }
@@ -116,8 +87,6 @@ export interface RootRouteChildren {
   CertsNewRoute: typeof CertsNewRoute
   CertsRevokeRoute: typeof CertsRevokeRoute
   CertsViewRoute: typeof CertsViewRoute
-  DemoInsecureRoute: typeof DemoInsecureRoute
-  DemoSecureRoute: typeof DemoSecureRoute
   UserCounterRoute: typeof UserCounterRoute
 }
 
@@ -135,20 +104,6 @@ declare module '@tanstack/react-router' {
       path: '/user/counter'
       fullPath: '/user/counter'
       preLoaderRoute: typeof UserCounterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/secure': {
-      id: '/demo/secure'
-      path: '/demo/secure'
-      fullPath: '/demo/secure'
-      preLoaderRoute: typeof DemoSecureRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/insecure': {
-      id: '/demo/insecure'
-      path: '/demo/insecure'
-      fullPath: '/demo/insecure'
-      preLoaderRoute: typeof DemoInsecureRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/certs/view': {
@@ -180,8 +135,6 @@ const rootRouteChildren: RootRouteChildren = {
   CertsNewRoute: CertsNewRoute,
   CertsRevokeRoute: CertsRevokeRoute,
   CertsViewRoute: CertsViewRoute,
-  DemoInsecureRoute: DemoInsecureRoute,
-  DemoSecureRoute: DemoSecureRoute,
   UserCounterRoute: UserCounterRoute,
 }
 export const routeTree = rootRouteImport
