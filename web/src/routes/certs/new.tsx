@@ -19,19 +19,21 @@ type UploadResult = {
 };
 
 const extractDomain = (pemContent: string): string => {
-    // Look for CN= in the certificate
-    // Common patterns:
-    // Subject: CN=example.com
-    // Subject: C=US, ST=CA, O=Company, CN=example.com
-    const cnMatch = pemContent.match(/CN\s*=\s*([^,\n\/]+)/i);
+  // Look for CN= in the certificate
+  // Common patterns:
+  // Subject: CN=example.com
+  // Subject: C=US, ST=CA, O=Company, CN=example.com
+  const cnMatch = pemContent.match(/CN\s*=\s*([^,\n/]+)/i);
 
-    if (cnMatch && cnMatch[1]) {
-      return cnMatch[1].trim();
-    }
+  if (cnMatch && cnMatch[1]) {
+    return cnMatch[1].trim();
+  }
 
-    // If not found, throw error
-    throw new Error('Could not extract domain from certificate. Certificate must contain a Common Name (CN).');
-  };
+  // If not found, throw error
+  throw new Error(
+    "Could not extract domain from certificate. Certificate must contain a Common Name (CN).",
+  );
+};
 
 // ---- PAGE COMPONENT ----
 function UploadCertificate(): JSX.Element {
@@ -68,7 +70,7 @@ function UploadCertificate(): JSX.Element {
       if (!domain) {
         setResult({
           success: false,
-          message: "Could not extract domain from certificate"
+          message: "Could not extract domain from certificate",
         });
         return;
       }
@@ -102,8 +104,6 @@ function UploadCertificate(): JSX.Element {
         ipfsCID: ipfsCID,
         domain: domain,
       });
-
-      // Clear file input
     } catch (err) {
       console.error("Upload error:", err);
       setResult({

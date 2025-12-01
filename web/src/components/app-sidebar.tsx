@@ -46,10 +46,6 @@ const data = {
           url: "/certs/view",
         },
         {
-          title: "Validate Certificate",
-          url: "/certs/validate",
-        },
-        {
           title: "Revoke Certificate",
           url: "/certs/revoke",
         },

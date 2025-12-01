@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { useEffect, useMemo, useState } from "react";
-import { type BigNumberish, JsonRpcProvider } from "ethers";
+import { JsonRpcProvider } from "ethers";
 import {
   type Certificate,
   downloadFileFromCID,
@@ -60,18 +60,6 @@ function RouteComponent() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const parseDate = (timestamp: BigNumberish) => {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-
-    const date = new Date(Number(timestamp) * 1000);
-    return date.toLocaleDateString("en-US", options);
   };
 
   useEffect(() => {
@@ -163,10 +151,9 @@ function RouteComponent() {
                 </label>
                 <a
                   href={"#"}
-                  //target="_blank"
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.preventDefault();
-                    downloadFileFromCID(cert.ipfsCID);
+                    await downloadFileFromCID(cert.ipfsCID).then(() => {});
                   }}
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm text-primary hover:text-[var(--color-chart-4)] hover:underline"
@@ -186,7 +173,9 @@ function RouteComponent() {
                   <label className="text-xs text-muted-foreground">
                     Registered
                   </label>
-                  <p className="text-sm">{parseDate(cert.timestamp)}</p>
+                  <p className="text-sm">
+                    {new Date(Number(cert.timestamp) * 1000).toLocaleString()}
+                  </p>
                 </div>
                 <div>
                   <label className="text-xs text-muted-foreground">Owner</label>
