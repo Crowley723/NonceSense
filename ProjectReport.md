@@ -1,11 +1,11 @@
 # CSC196D: Project Report
 ## Nonce Sense - Decentralized PKI on Blockchain
 
-| Member          | Responsibilities                                                                                                                  |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| Brynn Crowley   | TODO                                                                                                                              |
-| Marcos Pantoja  | Implemented local IPFS using Helia, Web3 Integration, smart contract development, created contracts-utils.ts, new.tsx, revoke.tsx |
-| Daniel Agafonov | TODO                                                                                                                              |
+| Member          | Responsibilities                                                                                                                                            |
+| --------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Brynn Crowley   | Initialized project structure, developed core Certificate contract, implemented frontend routes, and ui components for viewing and validating certificates. |
+| Marcos Pantoja  | Implemented local IPFS using Helia, Web3 Integration, smart contract development, created contracts-utils.ts, new.tsx, revoke.tsx                           |
+| Daniel Agafonov | TODO                                                                                                                                                        |
 
 ## Introduction
 
@@ -58,13 +58,13 @@ Nonce Sense addresses these concerns through a decentralized model. By moving ce
 
 ### Tech Stack
 
-| Layer           | Technology                                     |
-| --------------- | ---------------------------------------------- |
-| Frontend        | React 19, TypeScript, Vite                     |
-| Smart Contracts | Solidity, Hardhat 3, ethers.js                 |
-| Testing         | Solidity (Foundry Format)                      |
-| Deployment      | Hardhat Ignition                               |
-| Storage         | IPFS (off-chain), Ethereum (on-chain metadata) |
+| Layer           | Technology                                               |
+| --------------- |----------------------------------------------------------|
+| Frontend        | React 19, TypeScript, Vite                               |
+| Smart Contracts | Solidity, Hardhat 3, ethers.js                           |
+| Testing         | Solidity (Foundry Format)                                |
+| Deployment      | Hardhat Ignition                                         |
+| Storage         | IPFS (off-chain via Helia), Ethereum (on-chain metadata) |
 
 ### Project Structure
 ```
@@ -202,36 +202,44 @@ The web interface will be available at `http://localhost:5173`.
 ---
 ## Available Commands
 
-| Command                | Description                  |
-| ---------------------- | ---------------------------- |
-| `pnpm dev`             | Start web development server |
-| `pnpm dev:contracts`   | Start local Hardhat node     |
-| `pnpm build`           | Build web app for production |
-| `pnpm build:contracts` | Compile smart contracts      |
-| `pnpm test`            | Run all tests                |
-| `pnpm test:contracts`  | Run contract tests only      |
-| `pnpm deploy:local`    | Deploy to local network      |
-| `pnpm clean`           | Clean build artifacts        |
+| Command                | Description                    |
+| ---------------------- |--------------------------------|
+| `pnpm dev`             | + Start development web server |
+| `pnpm dev:contracts`   | + Start local Hardhat node     |
+| `pnpm build`           | Build web app for production   |
+| `pnpm build:contracts` | Compile smart contracts        |
+| `pnpm test`            | Run all tests                  |
+| `pnpm test:contracts`  | Run contract tests only        |
+| `pnpm deploy:local`    | + Deploy to local network      |
+| `pnpm clean`           | Clean build artifacts          |
+
+\+ These should be run in sequence to run our application locally.
 
 ---
 ## Challenges and Outcomes
 
 **Accomplishments**
-In terms of our accomplishments we were able to implement the end-to-end certificate life cycle of registration, verification, revocation. We were also successfully able to create a fully  functioning smart contract with Solidity tests. This smart contract successfully stores, returns and revokes the certificates stored on the blockchain. We were able to build an interactive UI that allowed for the revocation, registration and verification of certificates through an easy to use UI. We were able to successfully integrate IPFS using Helia for decentralized storage that in our PoC stores locally. Overall we were able to achieve a transparent, immutable certificate management using blockchain technologies. 
+In terms of our accomplishments we were able to implement the end-to-end certificate life cycle of registration, verification, revocation. We were also successfully able to create a fully  functioning smart contract with Solidity tests. This smart contract successfully stores, returns and revokes the certificates stored on the blockchain. We were able to build an interactive UI that allowed for the revocation, registration and verification of certificates through an easy-to-use UI. We were able to successfully integrate IPFS using Helia for decentralized storage that in our PoC stores locally. Overall we were able to achieve a transparent, immutable certificate management using blockchain technologies. 
 
 **Challenges Faced**
-
+We ran into some minor issues with our initial design, we didn't properly map out what our application was going to look like and do. And as a result, each teammate had their own ideas about what the UI should look like and do.
 
 **Remaining Work**
-- TODO
+- Currently, we use a local non-persistent Helia node for IPFS. In production, we would need to use a public IPFS network (including Helia)
+- To move this to a better spot, increasing the test coverage for the smart contract and the frontend would be useful
 
 ---
 
 ## Conclusion
 
-Nonce Sense demonstrates …
+Nonce Sense demonstrates the feasibility of replacing centralized Certificate authorities with blockchain-based certificate validation. Our implementation shows that despite various issues related to the design of TLS certificates that don't lend them to being decentralized, it is possible to use traditional certificates on a decentralized blockchain.
 
-TODO
+We achieved our goals with this project, implementing end-to-end certificate lifecycle management, integration IPFS for off-chain storage of certificates, and building a user interface to enable visualization of the concepts involved.
+
+Some additional improvements could be made to make the smart contract work more efficiently at a lower gas cost, but that is out of scope for this proof of concept.
+
+---
+## Disclaimer
 
 This is a proof-of-concept implementation intended for educational purposes. It runs on a local test network and is not production-ready.
 
