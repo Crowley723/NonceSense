@@ -141,6 +141,11 @@ export async function revokeRandomCertificates(count: number) {
     const serialNumber = shuffled[i];
 
     try {
+      const cert = await contract.getCertificate(serialNumber);
+      if (cert[0] === "secure.com") {
+        continue;
+      }
+
       const tx = await contract.revokeCertificate(serialNumber);
       await tx.wait();
       results.successful++;
