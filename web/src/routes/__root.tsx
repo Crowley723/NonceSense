@@ -265,6 +265,14 @@ function RootComponent() {
             </div>
           </CardContent>
         </Card>
+        <p>
+          Assuming you generate some test certificates (in the bottom left),
+          there are a couple URLs you can try:
+        </p>
+        <ul>
+          <li>secure.com</li>
+          <li>insecure.com</li>
+        </ul>
       </div>
     </div>
   );
